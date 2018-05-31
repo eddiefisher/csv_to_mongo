@@ -1,5 +1,8 @@
-// https://gist.github.com/boj/5412538
-// https://codereview.stackexchange.com/questions/70274/parsing-csvs-for-bulk-database-insertions
+// Copyright 2018, Eddie Fisher. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// product.go [created: Mon, 28 May 2018]
 
 package product
 
@@ -33,46 +36,23 @@ type Product struct {
 
 type Products []Product
 
-func (xp *Products) FindAll() error {
-	return dao.DB.C(COLLECTION).Find(nil).All(xp)
-}
-
 func (xp *Products) BulkUpsertWithIndex() error {
-	collection := dao.DB.C(COLLECTION)
-
-	err := createIndex()
-	if err != nil {
+	if err := createIndex(); err != nil {
 		return err
 	}
 
-	bulk := collection.Bulk()
+	bulk := dao.DB.C(COLLECTION).Bulk()
 	bulk.Unordered()
 	for _, product := range *xp {
 		bulk.Upsert(bson.M{"product_id": product.ProductID}, product)
 	}
 	bulk.Upsert()
-	_, err = bulk.Run()
+	_, err := bulk.Run()
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func (p *Product) FindById(id string) error {
-	return dao.DB.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&p)
-}
-
-func (p *Product) Insert(product Product) error {
-	return dao.DB.C(COLLECTION).Insert(&product)
-}
-
-func (p *Product) Delete(product Product) error {
-	return dao.DB.C(COLLECTION).Remove(&product)
-}
-
-func (p *Product) Update(product Product) error {
-	return dao.DB.C(COLLECTION).UpdateId(product.ID, &product)
 }
 
 func (p *Products) Count() (int, error) {

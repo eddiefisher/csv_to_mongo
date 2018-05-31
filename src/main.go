@@ -23,25 +23,16 @@ func init() {
 
 func main() {
 	defer dao.DB.Session.Close()
-	csvFile, err := os.Open("./products_ru.csv")
-	if err != nil {
-		_ = fmt.Errorf("could not open file: %v", err)
-	}
-	defer csvFile.Close()
 
-	reader := csv.NewReader(csvFile)
-	reader.FieldsPerRecord = -1
-
-	csvData, err := reader.ReadAll()
+	data, err := readCSV()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatalln(err)
 	}
 
 	var prod product.Product
 	var xprod product.Products
 
-	for _, data := range csvData {
+	for _, data := range data {
 		prod.ProductID, _ = strconv.Atoi(data[0])
 		prod.Link = data[1]
 		prod.Category = data[2]
@@ -60,4 +51,21 @@ func main() {
 	}
 	i, _ := xprod.Count()
 	fmt.Println("Count of record:", i)
+}
+
+func readCSV() ([][]string, error) {
+	file, err := os.Open("./products_ru.csv")
+	if err != nil {
+		return nil, fmt.Errorf("could not open file: %v", err)
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	reader.FieldsPerRecord = -1
+
+	data, err := reader.ReadAll()
+	if err != nil {
+		return nil, fmt.Errorf("could not read file: %v", err)
+	}
+	return data, nil
 }
