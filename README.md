@@ -6,10 +6,10 @@
 
 ##Docs
 
-create or update: 20 min
-upser without index: 29 min
-upsert with index: 51 sec
-bulk upsert with index: ~9 sec
+- create or update: 20 min
+- upser without index: 29 min
+- upsert with index: 51 sec
+- bulk upsert with index: ~9 sec
 
 ##Author
 
