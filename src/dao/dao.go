@@ -2,6 +2,7 @@ package dao
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/globalsign/mgo"
 	"home.dev/toster/csv_to_mongo/src/config"
@@ -20,6 +21,7 @@ func Connect() {
 		// Username:       config.MongoUsername,
 		// Password:       config.MongoPassword,
 		// ReplicaSetName: config.MongoReplicaSetName,
+		Timeout: 10 * time.Second,
 	})
 	if err != nil {
 		panic(err)
