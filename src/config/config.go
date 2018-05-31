@@ -1,7 +1,7 @@
 package config
 
 const (
-	MongoHost           = "localhost:32768"
+	MongoHost           = "localhost:32769"
 	MongoUsername       = "YOUR_USERNAME"
 	MongoPassword       = "YOUR_PASSWORD"
 	MongoDatabase       = "mgotoster"

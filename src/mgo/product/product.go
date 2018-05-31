@@ -6,6 +6,8 @@ package product
 import (
 	"fmt"
 
+	"github.com/globalsign/mgo"
+
 	"github.com/globalsign/mgo/bson"
 	"home.dev/toster/csv_to_mongo/src/dao"
 )
@@ -36,29 +38,23 @@ func (xp *Products) FindAll() error {
 }
 
 func (xp *Products) Upsert() error {
-	counter := 0
-	for _, product := range *xp {
-		q := dao.DB.C(COLLECTION).Find(bson.M{"product_id": product.ProductID})
-		if i, _ := q.Count(); i > 0 {
-			var p Product
-			err := q.One(&p)
-			if err != nil {
-				return err
-			}
-			err = dao.DB.C(COLLECTION).UpdateId(p.ID, &product)
-			if err != nil {
-				return err
-			}
-		} else {
-			product.ID = bson.NewObjectId()
-			err := dao.DB.C(COLLECTION).Insert(&product)
-			if err != nil {
-				return err
-			}
-		}
-		counter++
+	collection := dao.DB.C(COLLECTION)
+	err := collection.EnsureIndex(mgo.Index{Key: []string{"product_id"}})
+	if err != nil {
+		return err
 	}
-	fmt.Printf("counter: %v\n", counter)
+	indexes, err := collection.Indexes()
+	if err != nil {
+		return err
+	}
+	fmt.Println("key was created", indexes)
+
+	for _, product := range *xp {
+		_, err := collection.Upsert(bson.M{"product_id": product.ProductID}, product)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
