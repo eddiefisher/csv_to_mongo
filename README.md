@@ -2,7 +2,7 @@
 
 ## Install
 
-    go get home.dev/toster/csv_to_mongo
+    go get github.com/eddiefisher/csv_to_mongo
 
 ## Docs
 
