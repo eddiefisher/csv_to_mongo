@@ -1,21 +1,21 @@
 [godoc.org]: http://godoc.org/home.dev/toster/csv_to_mongo "godoc.org"
 
-##Install
+## Install
 
     go get home.dev/toster/csv_to_mongo
 
-##Docs
+## Docs
 
 - create or update: 20 min
 - upser without index: 29 min
 - upsert with index: 51 sec
 - bulk upsert with index: ~9 sec
 
-##Author
+## Author
 
 Eddie Fisher [eddi.fisher@gmail.com]
 
-##Copyright & License
+## Copyright & License
 
 Copyright (c) 2018, Eddie Fisher.
 All rights reserved.
