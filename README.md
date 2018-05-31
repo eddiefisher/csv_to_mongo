@@ -6,6 +6,8 @@
 
 ## Docs
 
+Tested on CSV file with 70500 records
+
 - create or update: 20 min
 - upser without index: 29 min
 - upsert with index: 51 sec
