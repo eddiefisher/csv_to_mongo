@@ -53,7 +53,7 @@ func main() {
 		xprod = append(xprod, prod)
 	}
 
-	err = xprod.Upsert()
+	err = xprod.UpsertWithIndex()
 	if err != nil {
 		log.Fatalf("could not insert or update: %v", err)
 	}

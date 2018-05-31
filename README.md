@@ -6,7 +6,9 @@
 
 ##Docs
 
-On [godoc.org][]
+create or update: 20 min
+upser without index: 29 min
+upsert with index: 51 sec
 
 ##Author
 

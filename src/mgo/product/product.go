@@ -37,7 +37,7 @@ func (xp *Products) FindAll() error {
 	return dao.DB.C(COLLECTION).Find(nil).All(xp)
 }
 
-func (xp *Products) Upsert() error {
+func (xp *Products) UpsertWithIndex() error {
 	collection := dao.DB.C(COLLECTION)
 	err := collection.EnsureIndex(mgo.Index{Key: []string{"product_id"}})
 	if err != nil {
