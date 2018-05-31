@@ -7,3 +7,6 @@ _test
 _obj
 
 
+products_ru.csv
+.DS_Store
+bin/
