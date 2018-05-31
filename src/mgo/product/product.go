@@ -37,24 +37,25 @@ func (xp *Products) FindAll() error {
 	return dao.DB.C(COLLECTION).Find(nil).All(xp)
 }
 
-func (xp *Products) UpsertWithIndex() error {
+func (xp *Products) BulkUpsertWithIndex() error {
 	collection := dao.DB.C(COLLECTION)
-	err := collection.EnsureIndex(mgo.Index{Key: []string{"product_id"}})
-	if err != nil {
-		return err
-	}
-	indexes, err := collection.Indexes()
-	if err != nil {
-		return err
-	}
-	fmt.Println("key was created", indexes)
 
-	for _, product := range *xp {
-		_, err := collection.Upsert(bson.M{"product_id": product.ProductID}, product)
-		if err != nil {
-			return err
-		}
+	err := createIndex()
+	if err != nil {
+		return err
 	}
+
+	bulk := collection.Bulk()
+	bulk.Unordered()
+	for _, product := range *xp {
+		bulk.Upsert(bson.M{"product_id": product.ProductID}, product)
+	}
+	bulk.Upsert()
+	_, err = bulk.Run()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -76,4 +77,19 @@ func (p *Product) Update(product Product) error {
 
 func (p *Products) Count() (int, error) {
 	return dao.DB.C(COLLECTION).Count()
+}
+
+func createIndex() error {
+	collection := dao.DB.C(COLLECTION)
+	err := collection.EnsureIndex(mgo.Index{Key: []string{"product_id"}})
+	if err != nil {
+		return err
+	}
+	indexes, err := collection.Indexes()
+	if err != nil {
+		return err
+	}
+	fmt.Println("key was created", indexes)
+
+	return nil
 }

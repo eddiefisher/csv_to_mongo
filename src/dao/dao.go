@@ -10,19 +10,12 @@ import (
 
 var DB *mgo.Database
 
+//Connect info https://godoc.org/github.com/globalsign/mgo#DialInfo
 func Connect() {
-	Host := []string{
-		config.MongoHost,
-	}
-
-	// https://godoc.org/github.com/globalsign/mgo#DialInfo
 	session, err := mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs:    Host,
+		Addrs:    []string{config.MongoHost},
 		Database: config.MongoDatabase,
-		// Username:       config.MongoUsername,
-		// Password:       config.MongoPassword,
-		// ReplicaSetName: config.MongoReplicaSetName,
-		Timeout: 10 * time.Second,
+		Timeout:  10 * time.Second,
 	})
 	if err != nil {
 		panic(err)

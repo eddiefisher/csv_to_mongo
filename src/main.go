@@ -22,6 +22,7 @@ func init() {
 }
 
 func main() {
+	defer dao.DB.Session.Close()
 	csvFile, err := os.Open("./products_ru.csv")
 	if err != nil {
 		_ = fmt.Errorf("could not open file: %v", err)
@@ -53,7 +54,7 @@ func main() {
 		xprod = append(xprod, prod)
 	}
 
-	err = xprod.UpsertWithIndex()
+	err = xprod.BulkUpsertWithIndex()
 	if err != nil {
 		log.Fatalf("could not insert or update: %v", err)
 	}
