@@ -15,6 +15,7 @@ func Connect() {
 		config.MongoHost,
 	}
 
+	// https://godoc.org/github.com/globalsign/mgo#DialInfo
 	session, err := mgo.DialWithInfo(&mgo.DialInfo{
 		Addrs:    Host,
 		Database: config.MongoDatabase,
