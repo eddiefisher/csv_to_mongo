@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/eddiefisher/csv_to_mongo)](https://goreportcard.com/report/github.com/eddiefisher/csv_to_mongo)
+
 [godoc.org]: http://godoc.org/home.dev/toster/csv_to_mongo "godoc.org"
 
 ## Install
